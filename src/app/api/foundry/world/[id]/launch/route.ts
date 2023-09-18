@@ -4,7 +4,7 @@ import Foundry from '~/service/foundry';
 export async function POST(request: NextRequest, { params }: { params: Record<string, string> }) {
   // TODO: check user permissions
 
-  if (!params.id) return NextResponse.json({ status: 'error', error: 'Invalid World ID' });
+  if (!params.id) return NextResponse.json({ status: 'error', error: 'Invalid World ID' }, { status: 400 });
 
   const foundry = new Foundry();
   await foundry.login();
