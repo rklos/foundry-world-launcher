@@ -1,5 +1,5 @@
 {
-  "name": "foundry-world-switch",
+  "name": "foundry-world-launcher",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -8,18 +8,37 @@
     "start": "next start",
     "lint": "next lint"
   },
+  "dependenciesComments": {
+    "bufferutil": "Required for socket.io",
+    "utf-8-validate": "Required for socket.io",
+    "ws": "Required for socket.io"
+  },
   "dependencies": {
+    "@ant-design/cssinjs": "1.17.0",
+    "@ant-design/icons": "5.2.6",
     "@types/node": "20.6.2",
     "@types/react": "18.2.21",
     "@types/react-dom": "18.2.7",
+    "antd": "5.9.1",
     "autoprefixer": "10.4.15",
+    "axios": "1.5.0",
+    "bufferutil": "4.0.7",
     "eslint": "8.49.0",
     "eslint-config-next": "13.4.19",
     "next": "13.4.19",
     "postcss": "8.4.29",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "set-cookie-parser": "2.6.0",
+    "socket.io-client": "4.7.2",
     "tailwindcss": "3.3.3",
-    "typescript": "5.2.2"
+    "typescript": "5.2.2",
+    "utf-8-validate": "5.0.10",
+    "ws": "8.14.1"
+  },
+  "devDependencies": {
+    "@types/set-cookie-parser": "2.4.3",
+    "eslint-config-airbnb": "19.0.4",
+    "eslint-plugin-only-warn": "1.1.0"
   }
 }
