@@ -1,7 +1,7 @@
 import './globals.css';
 import type { ReactNode } from 'react';
 import type { Metadata } from 'next';
-import StyledComponentsRegistry from '../lib/AntdRegistry';
+import StyledComponentsRegistry from '../libs/AntdRegistry';
 
 export const metadata: Metadata = {
   title: 'Foundry World Launcher',
