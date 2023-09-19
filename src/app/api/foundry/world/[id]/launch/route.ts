@@ -1,5 +1,5 @@
 import { NextResponse, NextRequest } from 'next/server';
-import Foundry from '~/service/foundry';
+import Foundry from '../../../_service';
 
 export async function POST(request: NextRequest, { params }: { params: Record<string, string> }) {
   // TODO: check user permissions

@@ -8,6 +8,7 @@ let sessionToken: string;
 export async function getRestApi() {
   if (api) return api;
 
+  // TODO: refactor with `ky`
   api = axios.create({ baseURL: `https://${process.env.FOUNDRY_URL}` });
 
   api.interceptors.response.use((response) => {

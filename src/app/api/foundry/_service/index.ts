@@ -1,5 +1,5 @@
 import type { AxiosInstance } from 'axios';
-import { wait } from '~/util/wait';
+import { wait } from '~/utils/wait';
 import { getRestApi, getSessionToken } from './api/rest';
 import WebSocket from './api/ws';
 

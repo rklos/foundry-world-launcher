@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import Foundry from '~/service/foundry';
+import Foundry from '../_service';
 
 export const revalidate = 24 * 60 * 60;
 
