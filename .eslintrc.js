@@ -37,5 +37,17 @@ module.exports = {
     // Doesn't work: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/issues/511
     'jsx-a11y/label-has-associated-control': 0,
     '@typescript-eslint/consistent-type-definitions': [ 1, 'interface' ],
+    '@typescript-eslint/consistent-type-imports': 1,
+    '@typescript-eslint/member-delimiter-style': [ 1, {
+      multiline: {
+        delimiter: 'semi',
+        requireLast: true,
+      },
+      singleline: {
+        delimiter: 'semi',
+        requireLast: true,
+      },
+      multilineDetection: 'brackets',
+    }],
   },
 };
