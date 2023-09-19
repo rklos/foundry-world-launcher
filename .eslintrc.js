@@ -2,10 +2,14 @@ module.exports = {
   extends: [
     'next/core-web-vitals',
     'airbnb',
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
   ],
   plugins: [
+    '@typescript-eslint',
     'only-warn',
   ],
+  parser: '@typescript-eslint/parser',
   rules: {
     'max-len': [ 1, {
       code: 120,
@@ -32,5 +36,6 @@ module.exports = {
     'react/jsx-curly-spacing': [ 1, { when: 'always', children: true, objectLiterals: 'never' }],
     // Doesn't work: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/issues/511
     'jsx-a11y/label-has-associated-control': 0,
+    '@typescript-eslint/consistent-type-definitions': [ 1, 'interface' ],
   },
 };
