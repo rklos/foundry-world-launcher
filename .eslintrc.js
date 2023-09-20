@@ -38,16 +38,6 @@ module.exports = {
     'jsx-a11y/label-has-associated-control': 0,
     '@typescript-eslint/consistent-type-definitions': [ 1, 'interface' ],
     '@typescript-eslint/consistent-type-imports': 1,
-    '@typescript-eslint/member-delimiter-style': [ 1, {
-      multiline: {
-        delimiter: 'semi',
-        requireLast: true,
-      },
-      singleline: {
-        delimiter: 'semi',
-        requireLast: true,
-      },
-      multilineDetection: 'brackets',
-    }],
+    '@typescript-eslint/member-delimiter-style': 1,
   },
 };
