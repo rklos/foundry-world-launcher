@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, Input } from 'antd';
+import { Button, Input, Space } from 'antd';
 import { LockOutlined, ArrowRightOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 
@@ -13,15 +13,17 @@ export default function Login() {
 
   return (
     <main className="flex items-center h-full">
-      <Input onChange={ (e) => setPassword(e.target.value) }
-             prefix={ <LockOutlined /> }
-             type="password"
-             autoComplete="off"
-             placeholder="Password" />
-      <Button onClick={ () => onLogin() }
-              icon={ <ArrowRightOutlined /> }
-              type="primary"
-              className="ml-2" />
+      <Space direction="horizontal">
+        <Input onChange={ (e) => setPassword(e.target.value) }
+               prefix={ <LockOutlined /> }
+               type="password"
+               autoComplete="off"
+               placeholder="Password" />
+        <Button onClick={ () => onLogin() }
+                icon={ <ArrowRightOutlined /> }
+                shape="circle"
+                type="primary" />
+      </Space>
     </main>
   );
 }

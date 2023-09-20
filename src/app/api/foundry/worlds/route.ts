@@ -1,15 +1,25 @@
 import { NextResponse } from 'next/server';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '~/libs/auth';
+import type { World } from '~/services/api/foundry/types';
 import Foundry from '../_service';
 
-export const revalidate = 24 * 60 * 60;
+let worldsCache: World[] = [];
 
 export async function GET() {
-  // TODO: check user permissions
+  const session = await getServerSession(authOptions);
+  if (!session) return NextResponse.json({ status: 'error', error: 'Unauthorized' }, { status: 401 });
 
-  const foundry = new Foundry();
-  await foundry.login();
-  const worlds = await foundry.getWorlds();
-  await foundry.logout();
+  let worlds: World[] = worldsCache;
+
+  if (!worldsCache.length) {
+    const foundry = new Foundry();
+    await foundry.login();
+    worlds = await foundry.getWorlds() as any[];
+    await foundry.logout();
+
+    worldsCache = worlds;
+  }
 
   return NextResponse.json({ status: 'ok', data: worlds });
 }

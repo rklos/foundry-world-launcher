@@ -1,11 +1,14 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
-import Foundry from '../../../_service';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '~/libs/auth';
+import Foundry from '~/app/api/foundry/_service';
 
 let isRunning = false;
 
-export async function POST(request: NextRequest, { params }: { params: Record<string, string> }) {
-  // TODO: check user permissions
+export async function POST(req: NextRequest, { params }: { params: Record<string, string> }) {
+  const session = await getServerSession(authOptions);
+  if (!session) return NextResponse.json({ status: 'error', error: 'Unauthorized' }, { status: 401 });
 
   if (!params.id) return NextResponse.json({ status: 'error', error: 'Invalid World ID' }, { status: 400 });
   if (isRunning) return NextResponse.json({ status: 'error', error: 'Already Running' }, { status: 400 });

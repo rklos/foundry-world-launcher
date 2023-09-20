@@ -1,11 +1,16 @@
 import { getApi } from '~/services/api/getApi';
 import { World } from '~/components/home/World';
 import { Space } from 'antd';
+import { getServerSession } from 'next-auth/next';
+import { redirect } from 'next/navigation';
+import { authOptions } from '~/libs/auth';
+import { cookies } from 'next/headers';
 
 export default async function Home() {
-  // TODO: use next-auth to check if user is logged in
-  const { foundry } = getApi();
+  const session = await getServerSession(authOptions);
+  if (!session) redirect('/api/auth/signin');
 
+  const { foundry } = getApi(cookies().toString());
   const worlds = await foundry.getWorlds();
 
   return (

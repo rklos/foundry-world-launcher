@@ -38,7 +38,7 @@ export default class Foundry {
     formData.append('userid', '');
 
     await this.api.post('join', formData);
-    // Wait for world to shutdown fully
+    // Wait for world to shutdown completely.
     await wait(1000);
   }
 

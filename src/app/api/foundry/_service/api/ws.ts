@@ -43,8 +43,6 @@ export default class WebSocket {
   disconnect() {
     return new Promise<void>((resolve) => {
       this.once('disconnect', () => {
-        // TODO: check if reconnecting is possible if we use this.socket.connect() instead of recreate socket
-        // this.socket = undefined;
         resolve();
       });
 
