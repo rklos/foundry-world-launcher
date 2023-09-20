@@ -76,11 +76,7 @@ export default class Foundry {
     return worlds;
   }
 
-  getCurrentWorld() {
-    return new Promise<string | undefined>((resolve) => {
-      this.socket.emit('getJoinData', (data: any) => {
-        resolve(data.world ? data.world.id : undefined);
-      });
-    });
+  async getCurrentWorld(): Promise<string | undefined> {
+    return (await this.api.get('api/status')).data.world;
   }
 }
