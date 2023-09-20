@@ -1,6 +1,6 @@
 interface SuccessResponse<T> {
   status: 'ok';
-  data: T;
+  data?: T;
 }
 
 interface ErrorResponse {
@@ -8,4 +8,4 @@ interface ErrorResponse {
   error: string;
 }
 
-export type ApiResponse<T> = SuccessResponse<T> | ErrorResponse;
+export type ApiResponse<T = void> = SuccessResponse<T> | ErrorResponse;
