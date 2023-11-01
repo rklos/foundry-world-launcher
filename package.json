@@ -2,6 +2,8 @@
   "name": "foundry-world-launcher",
   "version": "0.1.0",
   "private": true,
+  "author": "Radosław Kłos <radoslaw@klos.dev>",
+  "license": "MIT",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
