@@ -5,7 +5,7 @@ import setCookie from 'set-cookie-parser';
 let api: AxiosInstance;
 let sessionToken: string;
 
-export async function getRestApi() {
+export async function getRestApi(options?: { session: boolean }) {
   if (api) return api;
 
   // TODO: refactor with `ky`
@@ -20,10 +20,12 @@ export async function getRestApi() {
     return response;
   });
 
-  const loginPage = await api.get('auth');
+  if (options?.session !== false) {
+    const loginPage = await api.get('auth');
 
-  sessionToken = setCookie.parse(loginPage.headers['set-cookie'] || '', { map: true }).session.value;
-  api.defaults.headers.Cookie = `session=${sessionToken}`;
+    sessionToken = setCookie.parse(loginPage.headers['set-cookie'] || '', { map: true }).session.value;
+    api.defaults.headers.Cookie = `session=${sessionToken}`;
+  }
 
   return api;
 }

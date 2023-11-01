@@ -2,6 +2,12 @@ import type ky from 'ky';
 import type { ApiResponse } from '~/services/api/types';
 import type { World } from './types';
 
+export async function isOnline(api: typeof ky): Promise<boolean> {
+  const response = await api.get('foundry').json<ApiResponse<'online' | 'offline'>>();
+  if (response.status === 'error') return false;
+  return response.data === 'online';
+}
+
 export async function getWorlds(api: typeof ky): Promise<World[]> {
   const response = await api.get('foundry/worlds').json<ApiResponse<World[]>>();
   if (response.status === 'error') return [];

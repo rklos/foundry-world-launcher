@@ -8,6 +8,13 @@ export default class Foundry {
   private sessionToken!: string;
   private socket!: WebSocket;
 
+  async isOnline(): Promise<boolean> {
+    this.api = await getRestApi({ session: false });
+    const pageContent = await this.api.get('');
+    // A tricky way to handle if Foundry is online or not.
+    return pageContent.data.includes('foundry.js');
+  }
+
   async login() {
     this.api = await getRestApi();
 

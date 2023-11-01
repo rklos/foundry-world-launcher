@@ -1,6 +1,4 @@
 import { getApi } from '~/services/api/getApi';
-import { World } from '~/components/home/World';
-import { Space } from 'antd';
 import { getServerSession } from 'next-auth/next';
 import { redirect } from 'next/navigation';
 import { authOptions } from '~/libs/auth';
@@ -11,17 +9,13 @@ export default async function Home() {
   if (!session) redirect('/api/auth/signin');
 
   const { foundry } = getApi(cookies().toString());
-
   const isFoundryOnline = await foundry.isOnline();
-  if (!isFoundryOnline) redirect('/offline');
 
-  const worlds = await foundry.getWorlds();
+  if (isFoundryOnline) redirect('/');
 
   return (
     <main>
-      <Space direction="horizontal" size="middle">
-        { worlds.map((world) => <World data={ world } key={ world.id } />) }
-      </Space>
+      Foundry is offline!
     </main>
   );
 }
