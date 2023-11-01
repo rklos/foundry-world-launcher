@@ -14,9 +14,15 @@ export async function usersOnline(api: typeof ky): Promise<number> {
   return response.data!;
 }
 
-export async function getWorlds(api: typeof ky): Promise<World[]> {
+export async function getWorlds(api: typeof ky): Promise<World[] | null> {
   const response = await api.get('foundry/worlds').json<ApiResponse<World[]>>();
-  if (response.status === 'error') return [];
+  if (response.status === 'error') return null;
+  return response.data!;
+}
+
+export async function getCurrentWorld(api: typeof ky): Promise<string | null> {
+  const response = await api.get('foundry/world/current').json<ApiResponse<string | null>>();
+  if (response.status === 'error') return null;
   return response.data!;
 }
 

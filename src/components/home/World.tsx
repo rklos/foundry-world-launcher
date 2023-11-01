@@ -1,31 +1,34 @@
 'use client';
 
-import { Card } from 'antd';
+import { Badge, Card } from 'antd';
 import type { World } from '~/services/api/foundry/types';
 import { LaunchButton } from '~/components/home/LaunchButton';
 import { useContext } from 'react';
 import { EnvContext } from '~/env-context';
+import { CurrentWorldRibbon } from '~/components/home/CurrentWorldRibbon';
 
 interface Props {
   data: World;
+  isCurrent: boolean;
 }
 
-export function World({ data }: Props) {
+export function World({ data, isCurrent }: Props) {
   const env = useContext(EnvContext);
 
   const defaultCover = 'ui/backgrounds/setup.webp';
   const coverUrl = `${env.FOUNDRY_PROTO}://${env.FOUNDRY_URL}/${data.background || defaultCover}`;
 
   // eslint-disable-next-line @next/next/no-img-element
-  const coverImage = <img src={ coverUrl } alt={ data.id } className="h-36 object-cover" />;
-
-  const worldActions = [ <LaunchButton id={ data.id } /> ];
+  const CoverImage = <img src={ coverUrl } alt={ data.id } className="h-36 object-cover" />;
+  const WorldActions = [ <LaunchButton id={ data.id } /> ];
 
   return (
-    <Card cover={ coverImage }
-          className="w-60"
-          actions={ worldActions }>
-      <Card.Meta title={ data.title } description={ data.id } />
-    </Card>
+    <CurrentWorldRibbon isCurrent={ isCurrent }>
+      <Card cover={ CoverImage }
+            className="w-60"
+            actions={ WorldActions }>
+        <Card.Meta title={ data.title } description={ data.id } />
+      </Card>
+    </CurrentWorldRibbon>
   );
 }

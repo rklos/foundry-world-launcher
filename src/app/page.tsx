@@ -15,15 +15,22 @@ export default async function Home() {
   const isFoundryOnline = await foundry.isOnline();
   if (!isFoundryOnline) redirect('/offline');
 
-  const areUsersOnline = await foundry.usersOnline();
+  const areUsersOnline = !!(await foundry.usersOnline());
   if (areUsersOnline) redirect('/users-online');
 
   const worlds = await foundry.getWorlds();
+  if (!worlds) redirect('/error');
+
+  const currentWorld = await foundry.getCurrentWorld();
 
   return (
     <main>
       <Space direction="horizontal" size="middle">
-        { worlds.map((world) => <World data={ world } key={ world.id } />) }
+        { worlds.map((world) => (
+          <World data={ world }
+                 isCurrent={ currentWorld === world.id }
+                 key={ world.id } />
+        )) }
       </Space>
     </main>
   );
