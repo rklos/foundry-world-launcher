@@ -53,7 +53,7 @@ export function LaunchButton({ id, onLaunch }: Props) {
                     showCancel={ false }
                     onConfirm={ () => onClick() }>
           <div>
-            <PlayCircleOutlined />
+            <PlayCircleOutlined /> Launch
           </div>
         </Popconfirm>
       ) }
