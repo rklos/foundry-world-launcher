@@ -20,9 +20,11 @@ export default async function Home() {
   const worlds = await foundry.getWorldsList();
   if (!worlds) redirect('/error');
 
+  const currentWorld = await foundry.getCurrentWorld();
+
   return (
     <main>
-      <WorldsList worlds={ worlds } />
+      <WorldsList worlds={ worlds } initialCurrentWorld={ currentWorld } />
     </main>
   );
 }
