@@ -1,6 +1,6 @@
 'use client';
 
-import { World } from '~/components/home/World';
+import { World } from '~/components/home/WorldsList/World/World';
 import { Space } from 'antd';
 import { useState, useEffect } from 'react';
 import { getApi } from '~/services/api/getApi';

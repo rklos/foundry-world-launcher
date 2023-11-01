@@ -1,9 +1,9 @@
 import { Card } from 'antd';
 import type { World } from '~/services/api/foundry/types';
-import { LaunchButton } from '~/components/home/LaunchButton';
+import { LaunchButton } from '~/components/home/WorldsList/World/LaunchButton';
 import { useContext } from 'react';
 import { EnvContext } from '~/env-context';
-import { CurrentWorldRibbon } from '~/components/home/CurrentWorldRibbon';
+import { CurrentWorldRibbon } from '~/components/home/WorldsList/World/CurrentWorldRibbon';
 
 interface Props {
   data: World;
