@@ -24,6 +24,7 @@ module.exports = {
       tsx: 'never',
     }],
     'no-unused-vars': 0,
+    'class-methods-use-this': 0,
     'lines-between-class-members': [ 1, { enforce: [{ blankLine: 'always', prev: 'method', next: 'method' }] }],
     'import/prefer-default-export': 0,
     'react/react-in-jsx-scope': 0,

@@ -8,6 +8,12 @@ export async function isOnline(api: typeof ky): Promise<boolean> {
   return response.data === 'online';
 }
 
+export async function usersOnline(api: typeof ky): Promise<number> {
+  const response = await api.get('foundry/users-online').json<ApiResponse<number>>();
+  if (response.status === 'error') return 0;
+  return response.data!;
+}
+
 export async function getWorlds(api: typeof ky): Promise<World[]> {
   const response = await api.get('foundry/worlds').json<ApiResponse<World[]>>();
   if (response.status === 'error') return [];

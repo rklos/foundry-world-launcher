@@ -15,6 +15,9 @@ export default async function Home() {
   const isFoundryOnline = await foundry.isOnline();
   if (!isFoundryOnline) redirect('/offline');
 
+  const areUsersOnline = await foundry.usersOnline();
+  if (areUsersOnline) redirect('/users-online');
+
   const worlds = await foundry.getWorlds();
 
   return (

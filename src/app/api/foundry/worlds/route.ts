@@ -15,7 +15,7 @@ export async function GET() {
   if (!worldsCache.length) {
     const foundry = new Foundry();
     await foundry.login();
-    worlds = await foundry.getWorlds() as any[];
+    worlds = await foundry.getWorldsList();
     await foundry.logout();
 
     worldsCache = worlds;

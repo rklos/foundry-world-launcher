@@ -1,5 +1,7 @@
 import type { AxiosInstance } from 'axios';
 import { wait } from '~/utils/wait';
+import type { FoundryStatus } from '~/app/api/foundry/_service/types';
+import type { World } from '~/services/api/foundry/types';
 import { getRestApi, getSessionToken } from './api/rest';
 import WebSocket from './api/ws';
 
@@ -9,10 +11,11 @@ export default class Foundry {
   private socket!: WebSocket;
 
   async isOnline(): Promise<boolean> {
-    this.api = await getRestApi({ session: false });
-    const pageContent = await this.api.get('');
-    // A tricky way to handle if Foundry is online or not.
-    return pageContent.data.includes('foundry.js');
+    return !!(await this.getStatus())?.version;
+  }
+
+  async usersOnline(): Promise<number | undefined> {
+    return (await this.getStatus())?.users;
   }
 
   async login() {
@@ -46,6 +49,7 @@ export default class Foundry {
 
     await this.api.post('join', formData);
     // Wait for world to shutdown completely.
+    // TODO: try to find a better way to do this.
     await wait(1000);
   }
 
@@ -63,7 +67,7 @@ export default class Foundry {
     await this.api.post('setup', formData);
   }
 
-  async getWorlds() {
+  async getWorldsList(): Promise<World[]> {
     const currentWorld = await this.getCurrentWorld();
 
     if (currentWorld) {
@@ -71,19 +75,25 @@ export default class Foundry {
     }
 
     const worlds = await new Promise((resolve) => {
+      // TODO: potential timeout issue.
       this.socket.emit('getSetupData', (data: any) => {
         resolve(data.worlds);
       });
-    });
+    }) as World[];
 
     if (currentWorld) {
       await this.launchWorld(currentWorld);
     }
 
-    return worlds;
+    return worlds || [];
   }
 
   async getCurrentWorld(): Promise<string | undefined> {
-    return (await this.api.get('api/status')).data.world;
+    return (await this.getStatus())?.world;
+  }
+
+  async getStatus(): Promise<FoundryStatus | undefined> {
+    const api = await getRestApi({ session: false });
+    return (await api.get('api/status')).data;
   }
 }
