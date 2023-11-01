@@ -5,9 +5,10 @@ import { Popconfirm, message } from 'antd';
 
 interface Props {
   id: string;
+  onLaunch: () => void;
 }
 
-export function LaunchButton({ id }: Props) {
+export function LaunchButton({ id, onLaunch }: Props) {
   const [ messageApi, contextHolder ] = message.useMessage();
   const { foundry } = getApi();
   const { mutate, isPending } = useMutation({ mutationFn: foundry.launchWorld });
@@ -15,15 +16,17 @@ export function LaunchButton({ id }: Props) {
   function onSuccess() {
     messageApi.open({
       type: 'success',
-      content: `World launched! (id:${id})`,
+      content: `World launched! (id: ${id})`,
       key: `launch-${id}`,
       duration: 3,
     });
+
+    onLaunch();
   }
   function onError() {
     messageApi.open({
       type: 'error',
-      content: `Failed to launch world! (id:${id})`,
+      content: `Failed to launch world! (id: ${id})`,
       key: `launch-${id}`,
       duration: 3,
     });
@@ -47,6 +50,7 @@ export function LaunchButton({ id }: Props) {
         <Popconfirm title="Launch world?"
                     description="This will discard any unsaved changes"
                     okText="Launch"
+                    showCancel={ false }
                     onConfirm={ () => onClick() }>
           <div>
             <PlayCircleOutlined />

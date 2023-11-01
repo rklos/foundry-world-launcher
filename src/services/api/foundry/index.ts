@@ -14,7 +14,7 @@ export async function usersOnline(api: typeof ky): Promise<number> {
   return response.data!;
 }
 
-export async function getWorlds(api: typeof ky): Promise<World[] | null> {
+export async function getWorldsList(api: typeof ky): Promise<World[] | null> {
   const response = await api.get('foundry/worlds').json<ApiResponse<World[]>>();
   if (response.status === 'error') return null;
   return response.data!;

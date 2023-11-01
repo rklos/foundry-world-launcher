@@ -1,6 +1,6 @@
 import ky from 'ky';
 import {
-  isOnline, usersOnline, getWorlds, getCurrentWorld, launchWorld,
+  isOnline, usersOnline, getWorldsList, getCurrentWorld, launchWorld,
 } from '~/services/api/foundry';
 
 export function getApi(cookies?: string) {
@@ -19,7 +19,7 @@ export function getApi(cookies?: string) {
     foundry: {
       isOnline: () => isOnline(api),
       usersOnline: () => usersOnline(api),
-      getWorlds: () => getWorlds(api),
+      getWorldsList: () => getWorldsList(api),
       getCurrentWorld: () => getCurrentWorld(api),
       launchWorld: (id: string) => launchWorld(api, id),
     },

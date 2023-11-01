@@ -10,7 +10,7 @@ export function CurrentWorldRibbon({ children, isCurrent }: Props) {
   return (
     <>
       { isCurrent && (
-        <Badge.Ribbon text="Current World" color="green">
+        <Badge.Ribbon text="Running" color="green">
           { children }
         </Badge.Ribbon>
       ) }
