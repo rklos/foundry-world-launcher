@@ -21,7 +21,9 @@ export default function WorldsList({ worlds, initialCurrentWorld }: Props) {
   };
 
   return (
-    <Space direction="horizontal" size="middle">
+    <Space direction="horizontal"
+           size="middle"
+           wrap>
       { worlds.map((world) => (
         <World data={ world }
                isCurrent={ currentWorld === world.id }

@@ -6,7 +6,7 @@ import { createCache, extractStyle, StyleProvider } from '@ant-design/cssinjs';
 import type Entity from '@ant-design/cssinjs/es/Cache';
 import { useServerInsertedHTML } from 'next/navigation';
 
-function StyledComponentsRegistry({ children }: { children: ReactNode }) {
+export default function StyledComponentsRegistry({ children }: { children: ReactNode }) {
   // eslint-disable-next-line react-hooks/exhaustive-deps -- `createCache` is required to be called only once.
   const cache = useMemo<Entity>(() => createCache(), [ createCache ]);
   useServerInsertedHTML(() => (
@@ -15,5 +15,3 @@ function StyledComponentsRegistry({ children }: { children: ReactNode }) {
   ));
   return <StyleProvider cache={ cache }>{ children }</StyleProvider>;
 }
-
-export default StyledComponentsRegistry;
