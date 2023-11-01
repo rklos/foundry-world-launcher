@@ -10,7 +10,7 @@ interface Props {
 export function LaunchButton({ id }: Props) {
   const [ messageApi, contextHolder ] = message.useMessage();
   const { foundry } = getApi();
-  const { mutate, isLoading } = useMutation({ mutationFn: foundry.launchWorld });
+  const { mutate, isPending } = useMutation({ mutationFn: foundry.launchWorld });
 
   function onSuccess() {
     messageApi.open({
@@ -30,7 +30,7 @@ export function LaunchButton({ id }: Props) {
   }
 
   function onClick() {
-    if (isLoading) return;
+    if (isPending) return;
     messageApi.open({
       type: 'loading',
       content: 'Launching...',
@@ -43,7 +43,7 @@ export function LaunchButton({ id }: Props) {
   return (
     <>
       { contextHolder }
-      { !isLoading && (
+      { !isPending && (
         <Popconfirm title="Launch world?"
                     description="This will discard any unsaved changes"
                     okText="Launch"
@@ -53,7 +53,7 @@ export function LaunchButton({ id }: Props) {
           </div>
         </Popconfirm>
       ) }
-      { isLoading && <div className="cursor-default"><LoadingOutlined /></div> }
+      { isPending && <div className="cursor-default"><LoadingOutlined /></div> }
     </>
   );
 }
