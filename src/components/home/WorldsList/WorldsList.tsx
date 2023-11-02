@@ -23,6 +23,7 @@ export default function WorldsList({ worlds, initialCurrentWorld }: Props) {
   return (
     <Space direction="horizontal"
            size="middle"
+           align="start"
            wrap>
       { worlds.map((world) => (
         <World data={ world }

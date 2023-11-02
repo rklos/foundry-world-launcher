@@ -4,6 +4,7 @@ import type { ReactNode } from 'react';
 import { Button, Layout } from 'antd';
 import { PoweroffOutlined, GithubOutlined } from '@ant-design/icons';
 import { signOut } from 'next-auth/react';
+import { usePathname } from 'next/navigation';
 
 const { Header, Content } = Layout;
 
@@ -12,6 +13,8 @@ interface Props {
 }
 
 export default function AntdLayout({ children }: Props) {
+  const pathname = usePathname();
+
   const github = () => {
     window.open('https://github.com/rklos/foundry-world-launcher');
   };
@@ -25,11 +28,13 @@ export default function AntdLayout({ children }: Props) {
                 className="mx-4"
                 onClick={ () => github() }
                 type="text" />
-        <Button icon={ <PoweroffOutlined /> }
-                onClick={ () => signOut() }
-                ghost>
-          Logout
-        </Button>
+        { pathname !== '/login' && (
+          <Button icon={ <PoweroffOutlined /> }
+                  onClick={ () => signOut() }
+                  ghost>
+            Logout
+          </Button>
+        ) }
       </Header>
       <Content className="p-16">
         { children }

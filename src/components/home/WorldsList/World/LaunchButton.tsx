@@ -2,14 +2,15 @@ import { LoadingOutlined, PlayCircleOutlined } from '@ant-design/icons';
 import { useMutation } from '@tanstack/react-query';
 import { getApi } from '~/services/api/getApi';
 import { Popconfirm, message } from 'antd';
+import type { MessageInstance } from 'antd/es/message/interface';
 
 interface Props {
   id: string;
+  messageApi: MessageInstance;
   onLaunch: () => void;
 }
 
-export function LaunchButton({ id, onLaunch }: Props) {
-  const [ messageApi, contextHolder ] = message.useMessage();
+export function LaunchButton({ id, messageApi, onLaunch }: Props) {
   const { foundry } = getApi();
   const { mutate, isPending } = useMutation({ mutationFn: foundry.launchWorld });
 
@@ -45,7 +46,6 @@ export function LaunchButton({ id, onLaunch }: Props) {
 
   return (
     <>
-      { contextHolder }
       { !isPending && (
         <Popconfirm title="Launch world?"
                     description="This will discard any unsaved changes"

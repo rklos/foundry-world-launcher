@@ -11,6 +11,7 @@ export default function Login() {
   const router = useRouter();
   const [ password, setPassword ] = useState('');
   const [ error, setError ] = useState(false);
+  const [ loading, setLoading ] = useState(false);
 
   async function onPasswordChange(e: ChangeEvent<HTMLInputElement>) {
     setError(false);
@@ -18,9 +19,13 @@ export default function Login() {
   }
 
   async function onLogin() {
+    if (loading) return;
+    setLoading(true);
+
     const result = (await signIn('credentials', { redirect: false, password }))!;
 
     if (!result.ok) {
+      setLoading(false);
       setError(true);
       return;
     }
@@ -41,6 +46,7 @@ export default function Login() {
         <Button onClick={ () => onLogin() }
                 icon={ <ArrowRightOutlined /> }
                 shape="circle"
+                loading={ loading }
                 type="primary" />
       </Space>
       { error && <span className="text-red-500 mt-2">Incorrect password</span> }
