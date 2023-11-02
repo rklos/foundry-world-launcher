@@ -33,7 +33,7 @@ export default class WebSocket {
     // this.socket.onAny((...args) => console.log('WS <-', ...args));
     this.socket.onAnyOutgoing((...args) => console.log('WS', ...args));
 
-    return new Promise((resolve) => {
+    return new Promise<Socket>((resolve) => {
       this.once('session', () => {
         resolve(this.socket);
       });

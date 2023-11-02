@@ -2,13 +2,15 @@ import type { AxiosInstance } from 'axios';
 import { wait } from '~/utils/wait';
 import type { FoundryStatus } from '~/app/api/foundry/_service/types';
 import type { World } from '~/services/api/foundry/types';
+import type { Socket } from 'socket.io-client';
 import { getRestApi, getSessionToken } from './api/rest';
 import WebSocket from './api/ws';
 
 export default class Foundry {
   private api!: AxiosInstance;
   private sessionToken!: string;
-  private socket!: WebSocket;
+  private socket!: Socket;
+  private socketSession!: WebSocket;
 
   async isOnline(): Promise<boolean> {
     return !!(await this.getStatus())?.version;
@@ -28,8 +30,7 @@ export default class Foundry {
     await this.api.post('auth', formData);
     this.sessionToken = getSessionToken();
 
-    this.socket = new WebSocket(this.sessionToken);
-    await this.socket.connect();
+    await this.connectToSocket();
   }
 
   async logout() {
@@ -37,7 +38,7 @@ export default class Foundry {
     formData.append('action', 'adminLogout');
 
     await this.api.post('auth', formData);
-    await this.socket.disconnect();
+    await this.socketSession.disconnect();
   }
 
   async shutdownWorld() {
@@ -74,9 +75,13 @@ export default class Foundry {
       await this.shutdownWorld();
     }
 
+    if (!this.socket.connected) {
+      await this.connectToSocket();
+    }
+
     const worlds = await new Promise((resolve) => {
       // TODO: potential timeout issue.
-      this.socket.emit('getSetupData', (data: any) => {
+      this.socketSession.emit('getSetupData', (data: any) => {
         resolve(data.worlds);
       });
     }) as World[];
@@ -95,5 +100,10 @@ export default class Foundry {
   async getStatus(): Promise<FoundryStatus | undefined> {
     const api = await getRestApi({ session: false });
     return (await api.get('api/status')).data;
+  }
+
+  private async connectToSocket() {
+    this.socketSession = new WebSocket(this.sessionToken);
+    this.socket = await this.socketSession.connect();
   }
 }

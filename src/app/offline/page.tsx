@@ -6,7 +6,7 @@ import { cookies } from 'next/headers';
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
-  if (!session) redirect('/api/auth/signin');
+  if (!session) redirect('/login');
 
   const { foundry } = getApi(cookies().toString());
   const isFoundryOnline = await foundry.isOnline();

@@ -3,7 +3,7 @@
 import type { ReactNode } from 'react';
 import { Button, Layout } from 'antd';
 import { PoweroffOutlined, GithubOutlined } from '@ant-design/icons';
-import { redirect } from 'next/navigation';
+import { signOut } from 'next-auth/react';
 
 const { Header, Content } = Layout;
 
@@ -16,10 +16,6 @@ export default function AntdLayout({ children }: Props) {
     window.open('https://github.com/rklos/foundry-world-launcher');
   };
 
-  const logout = () => {
-    redirect('/auth/logout');
-  };
-
   return (
     <Layout className="w-screen min-h-screen">
       <Header className="flex items-center text-white bg-gradient-to-r from-orange-700 via-amber-500 to-black">
@@ -30,7 +26,7 @@ export default function AntdLayout({ children }: Props) {
                 onClick={ () => github() }
                 type="text" />
         <Button icon={ <PoweroffOutlined /> }
-                onClick={ () => logout() }
+                onClick={ () => signOut() }
                 ghost>
           Logout
         </Button>

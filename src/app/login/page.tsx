@@ -2,20 +2,39 @@
 
 import { Button, Input, Space } from 'antd';
 import { LockOutlined, ArrowRightOutlined } from '@ant-design/icons';
+import type { ChangeEvent } from 'react';
 import { useState } from 'react';
+import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 export default function Login() {
-  const [ password, setPassword ] = useState<string>('');
+  const router = useRouter();
+  const [ password, setPassword ] = useState('');
+  const [ error, setError ] = useState(false);
 
-  function onLogin() {
-    // TODO: use next-auth to login
+  async function onPasswordChange(e: ChangeEvent<HTMLInputElement>) {
+    setError(false);
+    setPassword(e.target.value);
+  }
+
+  async function onLogin() {
+    const result = (await signIn('credentials', { redirect: false, password }))!;
+
+    if (!result.ok) {
+      setError(true);
+      return;
+    }
+
+    router.push('/');
   }
 
   return (
-    <main className="flex items-center h-full">
+    <main className="flex justify-center h-full flex-col">
       <Space direction="horizontal">
-        <Input onChange={ (e) => setPassword(e.target.value) }
+        <Input onChange={ (e) => onPasswordChange(e) }
+               onPressEnter={ () => onLogin() }
                prefix={ <LockOutlined /> }
+               status={ error ? 'error' : undefined }
                type="password"
                autoComplete="off"
                placeholder="Password" />
@@ -24,6 +43,7 @@ export default function Login() {
                 shape="circle"
                 type="primary" />
       </Space>
+      { error && <span className="text-red-500 mt-2">Incorrect password</span> }
     </main>
   );
 }
