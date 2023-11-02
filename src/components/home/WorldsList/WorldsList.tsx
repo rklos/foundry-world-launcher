@@ -21,16 +21,19 @@ export default function WorldsList({ worlds, initialCurrentWorld }: Props) {
   };
 
   return (
-    <Space direction="horizontal"
-           size="middle"
-           align="start"
-           wrap>
-      { worlds.map((world) => (
-        <World data={ world }
-               isCurrent={ currentWorld === world.id }
-               onLaunch={ () => updateCurrentWorld() }
-               key={ world.id } />
-      )) }
-    </Space>
+    <>
+      <h1 className="text-2xl mb-4">Worlds</h1>
+      <Space direction="horizontal"
+             size="middle"
+             align="start"
+             wrap>
+        { worlds.map((world) => (
+          <World data={ world }
+                 isCurrent={ currentWorld === world.id }
+                 onLaunch={ () => updateCurrentWorld() }
+                 key={ world.id } />
+        )) }
+      </Space>
+    </>
   );
 }

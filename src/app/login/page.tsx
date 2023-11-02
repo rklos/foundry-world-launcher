@@ -34,22 +34,30 @@ export default function Login() {
   }
 
   return (
-    <main className="flex justify-center h-full flex-col">
-      <Space direction="horizontal">
-        <Input onChange={ (e) => onPasswordChange(e) }
-               onPressEnter={ () => onLogin() }
-               prefix={ <LockOutlined /> }
-               status={ error ? 'error' : undefined }
-               type="password"
-               autoComplete="off"
-               placeholder="Password" />
-        <Button onClick={ () => onLogin() }
-                icon={ <ArrowRightOutlined /> }
-                shape="circle"
-                loading={ loading }
-                type="primary" />
-      </Space>
-      { error && <span className="text-red-500 mt-2">Incorrect password</span> }
+    <main className="flex items-center justify-center h-full flex-col">
+      <section>
+        <h1 className="text-2xl mb-4">Login</h1>
+        <Space direction="horizontal" align="start">
+          <div>
+            <Input onChange={ (e) => onPasswordChange(e) }
+                   onPressEnter={ () => onLogin() }
+                   prefix={ <LockOutlined /> }
+                   status={ error ? 'error' : undefined }
+                   type="password"
+                   autoComplete="off"
+                   size="large"
+                   placeholder="Password" />
+            { error && <div className="text-red-500 mt-2">Incorrect password</div> }
+          </div>
+          <Button onClick={ () => onLogin() }
+                  icon={ <ArrowRightOutlined /> }
+                  loading={ loading }
+                  className="flex items-center justify-center"
+                  shape="circle"
+                  size="large"
+                  type="primary" />
+        </Space>
+      </section>
     </main>
   );
 }
