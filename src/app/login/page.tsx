@@ -8,16 +8,16 @@ import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
 export default function Login() {
-  const router = useRouter();
   const [ password, setPassword ] = useState('');
   const [ error, setError ] = useState(false);
-  const [ loading, setLoading ] = useState(false);
 
   async function onPasswordChange(e: ChangeEvent<HTMLInputElement>) {
     setError(false);
     setPassword(e.target.value);
   }
 
+  const [ loading, setLoading ] = useState(false);
+  const router = useRouter();
   async function onLogin() {
     if (loading) return;
     setLoading(true);

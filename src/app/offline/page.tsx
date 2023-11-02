@@ -3,6 +3,8 @@ import { getServerSession } from 'next-auth/next';
 import { redirect } from 'next/navigation';
 import { authOptions } from '~/libs/auth';
 import { cookies } from 'next/headers';
+import { Result } from 'antd';
+import RefreshButton from '~/components/offline/RefreshButton';
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
@@ -15,7 +17,10 @@ export default async function Home() {
 
   return (
     <main>
-      Foundry is offline!
+      <Result status="500"
+              title="Foundry is offline"
+              subTitle="Please check your Foundry server and try again."
+              extra={ <RefreshButton /> } />
     </main>
   );
 }
