@@ -5,6 +5,7 @@ import { Space } from 'antd';
 import { useState } from 'react';
 import { getApi } from '~/services/api/getApi';
 import type { World as WorldType } from '~/services/api/foundry/types';
+import { wait } from '~/utils/wait';
 
 interface Props {
   worlds: WorldType[];
@@ -16,7 +17,20 @@ export default function WorldsList({ worlds, initialCurrentWorld }: Props) {
 
   const [ currentWorld, setCurrentWorld ] = useState<string | null>(initialCurrentWorld);
   const updateCurrentWorld = async () => {
-    const world = await foundry.getCurrentWorld();
+    setCurrentWorld(null);
+
+    let world = null;
+    let attempts = 0;
+    do {
+      attempts += 1;
+      world = await foundry.getCurrentWorld();
+      await wait(250);
+    } while (world === null && attempts < 20);
+
+    if (world === null) {
+      throw new Error('Could not get current world');
+    }
+
     setCurrentWorld(world);
   };
 

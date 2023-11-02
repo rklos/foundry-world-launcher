@@ -24,6 +24,8 @@ module.exports = {
       tsx: 'never',
     }],
     'no-unused-vars': 0,
+    'no-await-in-loop': 0,
+    'no-plusplus': 0,
     'class-methods-use-this': 0,
     'lines-between-class-members': [ 1, { enforce: [{ blankLine: 'always', prev: 'method', next: 'method' }] }],
     'import/prefer-default-export': 0,

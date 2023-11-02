@@ -17,6 +17,7 @@ export default class WebSocket {
   }
 
   constructor(sessionToken: string) {
+    if (!sessionToken) throw new Error('[WS] Session token is required');
     this.socket = io(`wss://${process.env.FOUNDRY_URL}`, {
       path: '/socket.io',
       transports: [ 'websocket' ],
@@ -33,8 +34,9 @@ export default class WebSocket {
     // this.socket.onAny((...args) => console.log('WS <-', ...args));
     this.socket.onAnyOutgoing((...args) => console.log('WS', ...args));
 
-    return new Promise<Socket>((resolve) => {
-      this.once('session', () => {
+    return new Promise<Socket>((resolve, reject) => {
+      this.once('session', (data) => {
+        if (data === null) reject();
         resolve(this.socket);
       });
     });

@@ -1,13 +1,13 @@
-import type { AxiosInstance } from 'axios';
 import { wait } from '~/utils/wait';
 import type { FoundryStatus } from '~/app/api/foundry/_service/types';
 import type { World } from '~/services/api/foundry/types';
 import type { Socket } from 'socket.io-client';
+import type ky from 'ky';
 import { getRestApi, getSessionToken } from './api/rest';
 import WebSocket from './api/ws';
 
 export default class Foundry {
-  private api!: AxiosInstance;
+  private api!: typeof ky;
   private sessionToken!: string;
   private socket!: Socket;
   private socketSession!: WebSocket;
@@ -27,7 +27,11 @@ export default class Foundry {
     formData.append('action', 'adminAuth');
     formData.append('adminPassword', process.env.FOUNDRY_ADMIN_PASSWORD!);
 
-    await this.api.post('auth', formData);
+    await this.api.post('auth', { body: formData, redirect: 'error' })
+      .catch((error) => {
+        if (error.cause.message === 'unexpected redirect') return;
+        throw error;
+      });
     this.sessionToken = getSessionToken();
 
     await this.connectToSocket();
@@ -37,7 +41,11 @@ export default class Foundry {
     const formData = new FormData();
     formData.append('action', 'adminLogout');
 
-    await this.api.post('auth', formData);
+    await this.api.post('auth', { body: formData, redirect: 'error' })
+      .catch((error) => {
+        if (error.cause.message === 'unexpected redirect') return;
+        throw error;
+      });
     await this.socketSession.disconnect();
   }
 
@@ -48,10 +56,18 @@ export default class Foundry {
     formData.append('password', '');
     formData.append('userid', '');
 
-    await this.api.post('join', formData);
-    // Wait for world to shutdown completely.
-    // TODO: try to find a better way to do this.
-    await wait(1000);
+    await this.api.post('join', { body: formData });
+
+    let isWorldRunning = true;
+    let attempts = 0;
+    do {
+      console.log(`Waiting for world to shutdown... (attempts: ${++attempts})`);
+      isWorldRunning = !!(await this.getCurrentWorld());
+      // Wait for world to shutdown completely.
+      if (isWorldRunning) await wait(250);
+    } while (isWorldRunning || attempts > 20);
+
+    if (isWorldRunning) throw new Error('Failed to shutdown world.');
   }
 
   async launchWorld(id: string) {
@@ -65,7 +81,7 @@ export default class Foundry {
     formData.append('action', 'launchWorld');
     formData.append('world', id);
 
-    await this.api.post('setup', formData);
+    await this.api.post('setup', { body: formData });
   }
 
   async getWorldsList(): Promise<World[]> {
@@ -99,7 +115,7 @@ export default class Foundry {
 
   async getStatus(): Promise<FoundryStatus | undefined> {
     const api = await getRestApi({ session: false });
-    return (await api.get('api/status')).data;
+    return api.get('api/status', { cache: 'no-cache' }).json<FoundryStatus | undefined>();
   }
 
   private async connectToSocket() {

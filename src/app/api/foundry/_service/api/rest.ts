@@ -1,35 +1,28 @@
-import axios from 'axios';
-import type { AxiosInstance } from 'axios';
+import ky from 'ky';
 import setCookie from 'set-cookie-parser';
+import { StatefulSingleton } from '~/utils/stateful-singleton';
 
-let api: AxiosInstance;
-let sessionToken: string;
+const apiCache = new StatefulSingleton<typeof ky>('api');
+const sessionTokenCache = new StatefulSingleton<string>('sessionToken');
 
 export async function getRestApi(options?: { session: boolean }) {
+  let api = apiCache.value;
   if (api) return api;
 
-  // TODO: refactor with `ky`
-  api = axios.create({ baseURL: `${process.env.FOUNDRY_PROTO}://${process.env.FOUNDRY_URL}` });
-
-  api.interceptors.response.use((response) => {
-    console.log(
-      response.config.method?.toUpperCase(),
-      `${response.config.baseURL}/${response.config.url}`,
-      `[${response.status}]`,
-    );
-    return response;
-  });
+  api = ky.create({ prefixUrl: `${process.env.FOUNDRY_PROTO}://${process.env.FOUNDRY_URL}` });
 
   if (options?.session !== false) {
-    const loginPage = await api.get('auth');
-
-    sessionToken = setCookie.parse(loginPage.headers['set-cookie'] || '', { map: true }).session.value;
-    api.defaults.headers.Cookie = `session=${sessionToken}`;
+    const loginPage = await api!.get('auth');
+    sessionTokenCache.value = setCookie.parse(loginPage.headers.get('set-cookie') || '', { map: true }).session.value;
+    const sessionToken = sessionTokenCache.value;
+    api = api.extend({ headers: { Cookie: `session=${sessionToken}` } });
+    // cache is worth only if we have a session token
+    apiCache.value = api;
   }
 
   return api;
 }
 
 export function getSessionToken() {
-  return sessionToken;
+  return sessionTokenCache.value!;
 }
