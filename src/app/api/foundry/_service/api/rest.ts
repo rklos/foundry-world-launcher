@@ -9,7 +9,10 @@ export async function getRestApi(options?: { session: boolean }) {
   let api = apiCache.value;
   if (api) return api;
 
-  api = ky.create({ prefixUrl: `${process.env.FOUNDRY_PROTO}://${process.env.FOUNDRY_URL}` });
+  api = ky.create({
+    prefixUrl: `${process.env.FOUNDRY_PROTO}://${process.env.FOUNDRY_URL}`,
+    throwHttpErrors: false,
+  });
 
   if (options?.session !== false) {
     const loginPage = await api!.get('auth');

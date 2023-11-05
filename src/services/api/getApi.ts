@@ -13,6 +13,7 @@ export function getApi(cookies?: string) {
     headers: {
       Cookie: cookies,
     },
+    throwHttpErrors: false,
   };
 
   const api = ky.create({

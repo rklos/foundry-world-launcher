@@ -115,7 +115,9 @@ export default class Foundry {
 
   async getStatus(): Promise<FoundryStatus | undefined> {
     const api = await getRestApi({ session: false });
-    return api.get('api/status', { cache: 'no-cache' }).json<FoundryStatus | undefined>();
+    return api.get('api/status', { cache: 'no-cache' })
+      .json<FoundryStatus | undefined>()
+      .catch(() => undefined);
   }
 
   private async connectToSocket() {
