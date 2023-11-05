@@ -22,7 +22,7 @@ export default function AntdLayout({ children }: Props) {
   return (
     <Layout className="w-screen min-h-screen">
       <Header className="flex items-center text-white bg-gradient-to-r from-orange-700 via-amber-500 to-black">
-        <div className="text-xl">Foundry World Launcher</div>
+        <div className="text-xl"><a href="/" className="text-white hover:text-white no-underline">Foundry World Launcher</a></div>
         <div className="flex-1" />
         <Button icon={ <GithubOutlined className="text-white !text-xl" /> }
                 className="mx-4"

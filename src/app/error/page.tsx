@@ -1,7 +1,11 @@
-export default async function Home() {
+import { Result } from 'antd';
+
+export default async function Error() {
   return (
     <main>
-      Error
+      <Result status="error"
+              title="Server error!"
+              subTitle="Something went wrong. Please try again later." />
     </main>
   );
 }

@@ -3,8 +3,10 @@ import { getServerSession } from 'next-auth/next';
 import { redirect } from 'next/navigation';
 import { authOptions } from '~/libs/auth';
 import { cookies } from 'next/headers';
+import RefreshButton from '~/components/common/RefreshButton';
+import { Result } from 'antd';
 
-export default async function Home() {
+export default async function UsersOnline() {
   const session = await getServerSession(authOptions);
   if (!session) redirect('/login');
 
@@ -15,7 +17,10 @@ export default async function Home() {
 
   return (
     <main>
-      Some users are online! Please wait for them to finish their session.
+      <Result status="403"
+              title="Some users are online!"
+              subTitle="Please wait for them to finish their session."
+              extra={ <RefreshButton /> } />
     </main>
   );
 }

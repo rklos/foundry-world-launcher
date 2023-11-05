@@ -4,9 +4,9 @@ import { redirect } from 'next/navigation';
 import { authOptions } from '~/libs/auth';
 import { cookies } from 'next/headers';
 import { Result } from 'antd';
-import RefreshButton from '~/components/offline/RefreshButton';
+import RefreshButton from '~/components/common/RefreshButton';
 
-export default async function Home() {
+export default async function Offline() {
   const session = await getServerSession(authOptions);
   if (!session) redirect('/login');
 

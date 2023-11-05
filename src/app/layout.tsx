@@ -2,7 +2,7 @@ import '../globals.css';
 import type { ReactNode } from 'react';
 import type { Metadata } from 'next';
 import Providers from '~/providers';
-import AntdLayout from '~/components/antd-layout';
+import AntdLayout from '~/components/layout/antd-layout';
 
 export const metadata: Metadata = {
   title: 'Foundry World Launcher',
