@@ -24,9 +24,6 @@ export function getApi(cookies?: string) {
   const apiWithCache = ky.create({
     ...apiOptions,
     next: {
-      // Next throws a warning about mixing "cache" and "revalidate", but I don't use "cache",
-      // so I don't know why it's complaining. Maybe it's because Next 14?
-      // Anyway, it works, so I'm ignoring it.
       revalidate: 3 * 60 * 60,
     },
   });
